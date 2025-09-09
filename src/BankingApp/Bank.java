@@ -8,6 +8,11 @@ public class Bank {
     private String name;
     private List<Konto> konten;
 
+    public void main(String[] args) {
+        Konto konto = new Konto("Bank", "1234", 100);
+        createKonto(konto);
+    }
+
     public Bank(String name) {
         this.name = name;
         this.konten = new ArrayList<>();
@@ -40,9 +45,4 @@ public class Bank {
     public List<Konto> getKonten() {
         return konten;
     }
-
-
-
-
-
 }
