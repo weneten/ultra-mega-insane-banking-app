@@ -1,6 +1,8 @@
 package BankingApp;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.GridLayout;
@@ -14,6 +16,7 @@ public class GUI {
     public static void main(String[] args) {
 
         konto = kontoinhaber.erstelleKonto("Max Mustermann", "DE1234567890");
+        Konto zweitesKonto = kontoinhaber.erstelleKonto("Testkunde", "1234");
 
         JFrame mainFrame = new JFrame("GUI");
         mainFrame.setSize(1000, 800);
@@ -37,16 +40,19 @@ public class GUI {
         menuPanel.setVisible(true);
 
         headerLabel = new JLabel("", SwingConstants.CENTER);
+        headerLabel.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 50));
         updateHeader(menuPanel); // Label-Text setzen
         menuPanel.add(headerLabel);
 
         JButton einzahlButton = new JButton("Einzahlen");
+        einzahlButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 35));
         menuPanel.add(einzahlButton);
         einzahlButton.addActionListener(e -> {
             einzahlUI(menuPanel, frame);
         });
 
-        JButton auszahlButton = new JButton("Auszahen");
+        JButton auszahlButton = new JButton("Auszahlen");
+        auszahlButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 35));
         menuPanel.add(auszahlButton);
         auszahlButton.addActionListener(e -> {
             auszahlUI(menuPanel, frame);
@@ -54,6 +60,7 @@ public class GUI {
         });
 
         JButton ueberweisButton = new JButton("Überweisen");
+        ueberweisButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 35));
         menuPanel.add(ueberweisButton);
         ueberweisButton.addActionListener(e -> {
             ueberweisUI(menuPanel, frame);
@@ -82,9 +89,12 @@ public class GUI {
         einzahlPanel.setVisible(true);
 
         JTextField amount = new JTextField();
+        amount.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 50));
+        amount.setHorizontalAlignment(JTextField.CENTER);
         einzahlPanel.add(amount);
 
         JButton einzahlBesteaButton = new JButton("Bestätigen");
+        einzahlBesteaButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 35)); // Schriftgröße 24
         einzahlPanel.add(einzahlBesteaButton);
         einzahlBesteaButton.addActionListener(e -> {
             float betrag = Float.parseFloat(amount.getText());
@@ -120,9 +130,12 @@ public class GUI {
         auszahlPanel.setVisible(true);
 
         JTextField amount = new JTextField();
+        amount.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 50));
+        amount.setHorizontalAlignment(JTextField.CENTER);
         auszahlPanel.add(amount);
 
         JButton auszahlBestatigenButton = new JButton("Bestätigen");
+        auszahlBestatigenButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 35)); // Schriftgröße 24
         auszahlPanel.add(auszahlBestatigenButton);
         auszahlBestatigenButton.addActionListener(e -> {
             float betrag = Float.parseFloat(amount.getText());
@@ -157,19 +170,24 @@ public class GUI {
         ueberweisPanel.setVisible(true);
 
         JTextField amount = new JTextField();
+        amount.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 50));
+        amount.setHorizontalAlignment(JTextField.CENTER);
         ueberweisPanel.add(amount);
 
         JTextField empfaenger = new JTextField();
+        empfaenger.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 50));
+        empfaenger.setHorizontalAlignment(JTextField.CENTER);
         ueberweisPanel.add(empfaenger);
 
         JButton ueberweisBesteaButton = new JButton("Bestätigen");
+        ueberweisBesteaButton.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 35)); // Schriftgröße 24
         ueberweisPanel.add(ueberweisBesteaButton);
         ueberweisBesteaButton.addActionListener(e -> {
             float betrag = Float.parseFloat(amount.getText());
             String empfaengerKontonummer = empfaenger.getText();
             for (Konto k : bank.getKonten()) {
                 if (k.getKontonummer().equals(empfaengerKontonummer)) {
-                    Ueberweisung ueberweisung = new Ueberweisung(betrag, konto, k);
+                    Ueberweisung ueberweisung = new Ueberweisung(betrag, konto, k, bank);
                     ueberweisung.doUeberweisung();
                 }
             }

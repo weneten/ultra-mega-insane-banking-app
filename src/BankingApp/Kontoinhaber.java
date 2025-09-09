@@ -18,7 +18,7 @@ public class Kontoinhaber {
 
     // In Kontoinhaber.java:
     public Konto erstelleKonto(String name, String iban) {
-        Konto k = new Konto(name, iban, 100); // Startbetrag 100
+        Konto k = new Konto(name, iban, 100, bank); // Startbetrag 100
         bank.createKonto(k);
         konten.add(k);
         return k;

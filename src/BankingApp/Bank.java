@@ -8,29 +8,22 @@ public class Bank {
     private String name;
     private List<Konto> konten;
 
-    public void main(String[] args) {
-        Konto konto = new Konto("Bank", "1234", 100);
-        createKonto(konto);
-    }
-
     public Bank(String name) {
         this.name = name;
         this.konten = new ArrayList<>();
     }
 
-    public void createKonto(Konto i){
+    public void createKonto(Konto i) {
         konten.add(i);
     }
 
     public void uberweisungDurchfuehren(Ueberweisung ueberweisung) {
         Konto sender = ueberweisung.getSender();
-        Konto empfaengerKontonummer = ueberweisung.getEmpfaenger();
+        Konto empfaengerKonto = ueberweisung.getEmpfaenger();
         float betrag = ueberweisung.getBetrag();
 
-        sender.auszahlen(betrag);
-        
-        for(Konto k : konten) {
-            if(k == empfaengerKontonummer) {
+        for (Konto k : konten) {
+            if (k.getKontonummer().equals(empfaengerKonto.getKontonummer()) && sender.getKontostand() - betrag >= 0) {
                 sender.auszahlen(betrag);
                 k.einzahlen(betrag);
                 break;

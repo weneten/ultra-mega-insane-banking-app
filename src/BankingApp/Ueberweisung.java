@@ -9,10 +9,11 @@ public class Ueberweisung {
     private Bank bank;
 
 
-    public Ueberweisung(float betrag, Konto sender, Konto empfaenger) {
+    public Ueberweisung(float betrag, Konto sender, Konto empfaenger, Bank bank) {
         this.betrag = betrag;
         this.sender = sender;
         this.empfaenger = empfaenger;
+        this.bank = bank;
     }
 
     public float getBetrag() {
