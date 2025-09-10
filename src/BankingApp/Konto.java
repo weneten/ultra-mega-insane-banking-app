@@ -9,12 +9,15 @@ public class Konto {
     private float kontostand = 100;
     private List<Ueberweisung> umsaetze;
     private Bank bank;
+    private GUI gui;
+    private String name;
 
     public Konto(String name, String kontonummer, float kontostand, Bank bank) {
         this.kontonummer = kontonummer;
         this.kontostand = kontostand;
         this.umsaetze = new ArrayList<>();
         this.bank = bank;
+        this.name = name;
     }
 
     public void einzahlen(float betrag) {
@@ -24,6 +27,9 @@ public class Konto {
     public void auszahlen(float betrag) {
         if (this.kontostand - betrag >= 0) {
             this.kontostand -= betrag;
+        }
+        else{
+            gui.errorBalance();
         }
     }
 
@@ -41,10 +47,15 @@ public class Konto {
 
     public void ueberweisen(float betrag, Konto empfaenger) {
         if (this.kontostand - betrag >= 0) {
-            Ueberweisung ueberweisung = new Ueberweisung(betrag, this, empfaenger, bank);
+            Ueberweisung ueberweisung = new Ueberweisung(betrag, empfaenger, kontonummer, bank);
             this.umsaetze.add(ueberweisung);
         }
 
     }
+
+    public String getInhaber() {
+        return this.name;
+    }
+
 
 }

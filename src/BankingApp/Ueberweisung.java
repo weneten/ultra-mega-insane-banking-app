@@ -4,15 +4,13 @@ public class Ueberweisung {
 
     private float betrag;
     private final Konto sender;
-    private final Konto empfaenger;
-
+    private final String empfaengerKontonummer;
     private Bank bank;
 
-
-    public Ueberweisung(float betrag, Konto sender, Konto empfaenger, Bank bank) {
+    public Ueberweisung(float betrag, Konto sender, String empfaengerKontonummer2, Bank bank) {
         this.betrag = betrag;
         this.sender = sender;
-        this.empfaenger = empfaenger;
+        this.empfaengerKontonummer = empfaengerKontonummer2;
         this.bank = bank;
     }
 
@@ -24,12 +22,11 @@ public class Ueberweisung {
         return sender;
     }
 
-    public Konto getEmpfaenger() {
-        return empfaenger;
+    public String getEmpfaengerKontonummer() {
+        return empfaengerKontonummer;
     }
 
-    public void doUeberweisung(){
+    public void doUeberweisung() {
         bank.uberweisungDurchfuehren(this);
     }
-
 }

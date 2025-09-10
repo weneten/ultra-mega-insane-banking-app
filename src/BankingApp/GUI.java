@@ -16,7 +16,7 @@ public class GUI {
     public static void main(String[] args) {
 
         konto = kontoinhaber.erstelleKonto("Max Mustermann", "DE1234567890");
-        Konto zweitesKonto = kontoinhaber.erstelleKonto("Testkunde", "1234");
+        Konto zweitesKonto = kontoinhaber.erstelleKonto("BW Bank", "DE1234");
 
         JFrame mainFrame = new JFrame("GUI");
         mainFrame.setSize(1000, 800);
@@ -27,6 +27,7 @@ public class GUI {
         mainFrame.setVisible(true);
 
         menuButtons(mainFrame, kontoinhaber);
+        bank.readInfo();
     }
 
     public static JLabel headerLabel;
@@ -69,10 +70,8 @@ public class GUI {
     }
 
     public static void updateHeader(JPanel menuPanel) {
-
-        headerLabel.setText("Kontostand: " + (konto != null ? konto.getKontostand() : "0.00") + " €"
-                + "   Nutzer: " + kontoinhaber.getName() + " Kontonummer: " + konto.getKontonummer());
-
+        headerLabel.setText("<html>Kontostand: " + (konto != null ? konto.getKontostand() : "0.00") + " €"
+                + "<br>Nutzer: " + kontoinhaber.getName() + "<br>Kontonummer: " + konto.getKontonummer() + "</html>");
     }
 
     public static void einzahlUI(JPanel menuPanel, JFrame mainFrame) {
@@ -185,12 +184,10 @@ public class GUI {
         ueberweisBesteaButton.addActionListener(e -> {
             float betrag = Float.parseFloat(amount.getText());
             String empfaengerKontonummer = empfaenger.getText();
-            for (Konto k : bank.getKonten()) {
-                if (k.getKontonummer().equals(empfaengerKontonummer)) {
-                    Ueberweisung ueberweisung = new Ueberweisung(betrag, konto, k, bank);
-                    ueberweisung.doUeberweisung();
-                }
-            }
+
+            Ueberweisung ueberweisung = new Ueberweisung(betrag, konto, empfaengerKontonummer, bank);
+            bank.uberweisungDurchfuehren(ueberweisung);
+
             System.out.println(konto.getKontostand());
             for (Component x : ueberweisPanel.getComponents()) {
                 x.setEnabled(false);
@@ -206,5 +203,51 @@ public class GUI {
             updateHeader(menuPanel);
         });
 
+    }
+
+    public static void errorBalance() {
+
+        JFrame errorFrame = new JFrame();
+        errorFrame.setTitle("Fehlermeldung");
+        errorFrame.setSize(700, 200);
+        errorFrame.setLocationRelativeTo(null);
+        errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel label = new JLabel("Guthaben zu wenig! Armer Schlucker! HAHAHA", SwingConstants.CENTER);
+        panel.add(label, BorderLayout.CENTER);
+        label.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 30));
+
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> errorFrame.dispose());
+        panel.add(okButton, BorderLayout.SOUTH);
+
+        errorFrame.add(panel);
+        errorFrame.setVisible(true);
+    }
+
+    public static void errorWrongClient() {
+
+        JFrame errorFrame = new JFrame();
+        errorFrame.setTitle("Fehlermeldung");
+        errorFrame.setSize(700, 200);
+        errorFrame.setLocationRelativeTo(null);
+        errorFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel label = new JLabel("Falsches Empfänger Konto du Hund!!!", SwingConstants.CENTER);
+        panel.add(label, BorderLayout.CENTER);
+        label.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 30));
+
+        JButton okButton = new JButton("OK");
+        okButton.addActionListener(e -> errorFrame.dispose());
+        panel.add(okButton, BorderLayout.SOUTH);
+
+        errorFrame.add(panel);
+        errorFrame.setVisible(true);
     }
 }
