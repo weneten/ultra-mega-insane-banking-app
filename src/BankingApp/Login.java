@@ -78,7 +78,7 @@ public class Login {
 
         JTextField password = new JTextField("Enter password");
         password.setHorizontalAlignment(JTextField.CENTER);
-        password. setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 50));
+        password.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 50));
         password.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent e) {
                 if (password.getText().equals("Enter password")) {
@@ -94,25 +94,24 @@ public class Login {
         });
         panel.add(password);
 
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-
-        String passwordText = password.getText();
-
-        try {
-            KeySpec spec = new PBEKeySpec(passwordText.toCharArray(), salt, 65536, 128);
-            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            byte[] hash = factory.generateSecret(spec).getEncoded();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
         JButton okBut = new JButton("Register");
         okBut.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 50));
         panel.add(okBut);
         okBut.addActionListener(e -> {
+            SecureRandom random = new SecureRandom();
+            byte[] salt = new byte[16];
+            random.nextBytes(salt);
 
+            String passwordText = password.getText();
+
+            try {
+                KeySpec spec = new PBEKeySpec(passwordText.toCharArray(), salt, 65536, 128);
+                SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+                hash = factory.generateSecret(spec).getEncoded();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            System.out.println("Username: " + username.getText() + " Password: " + hash.toString());
         });
     }
 }
